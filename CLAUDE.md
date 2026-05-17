@@ -54,6 +54,12 @@ A single shared `httpx.AsyncClient` is reused across calls for connection poolin
 
 All tunables live here. `LLM_SERVER_URL` is the only env-var override; everything else is hardcoded constants (timeout, concurrency cap, retry policy, rate limits, token costs).
 
+## Keeping This File Up-to-Date
+
+After any meaningful code modification, verify that this file accurately reflects the current codebase. Update it **only if there is an actual inconsistency** — if the file is already consistent with the code, make no edits.
+
+Check for drift in: commands, architecture descriptions, file/module names, configuration constants, and key design constraints.
+
 ### Key design constraints
 
 - `MAX_CONCURRENT_TASKS = 5` — semaphore in `main.py` limits simultaneous pipeline executions
