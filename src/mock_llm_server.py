@@ -9,7 +9,8 @@ Simulates real-world unreliability:
 This unreliability is INTENTIONAL and is NOT one of the hidden issues.
 """
 
-import asyncio, random
+import asyncio
+import random
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -59,4 +60,5 @@ async def inference(req: InferenceRequest):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8081)

@@ -57,19 +57,24 @@ async def create_task(body: CreateTaskBody):
     if cache_key in _response_cache:
         cached = _response_cache[cache_key]
         result = TaskResult(
-            task_id=task_id, status=TaskStatus.COMPLETED,
-            tenant_id=body.tenant_id, priority=body.priority,
+            task_id=task_id,
+            status=TaskStatus.COMPLETED,
+            tenant_id=body.tenant_id,
+            priority=body.priority,
             result=cached.get("result"),
             token_usage={"prompt_tokens": 0, "completion_tokens": 0},
-            created_at=time.time(), completed_at=time.time(),
+            created_at=time.time(),
+            completed_at=time.time(),
         )
         task_store[task_id] = result
         return _to_response(result)
 
     # Execute the task (bounded by concurrency limit)
     task_store[task_id] = TaskResult(
-        task_id=task_id, status=TaskStatus.PENDING,
-        tenant_id=body.tenant_id, priority=body.priority,
+        task_id=task_id,
+        status=TaskStatus.PENDING,
+        tenant_id=body.tenant_id,
+        priority=body.priority,
     )
 
     async def _guarded_execute():
@@ -86,15 +91,19 @@ async def create_task(body: CreateTaskBody):
     # Enforce task-level deadline: clients should not wait indefinitely
     try:
         result = await asyncio.wait_for(
-            _guarded_execute(), timeout=TASK_TIMEOUT_SECONDS,
+            _guarded_execute(),
+            timeout=TASK_TIMEOUT_SECONDS,
         )
     except asyncio.TimeoutError:
         result = TaskResult(
-            task_id=task_id, status=TaskStatus.FAILED,
-            tenant_id=body.tenant_id, priority=body.priority,
+            task_id=task_id,
+            status=TaskStatus.FAILED,
+            tenant_id=body.tenant_id,
+            priority=body.priority,
             error="Task execution exceeded time limit",
             token_usage={"prompt_tokens": 0, "completion_tokens": 0},
-            created_at=time.time(), completed_at=time.time(),
+            created_at=time.time(),
+            completed_at=time.time(),
         )
     task_store[task_id] = result
 
@@ -119,9 +128,13 @@ async def health():
 
 def _to_response(r: TaskResult) -> TaskResponse:
     return TaskResponse(
-        task_id=r.task_id, status=r.status,
-        tenant_id=r.tenant_id, priority=r.priority,
-        result=r.result, error=r.error,
+        task_id=r.task_id,
+        status=r.status,
+        tenant_id=r.tenant_id,
+        priority=r.priority,
+        result=r.result,
+        error=r.error,
         token_usage=r.token_usage,
-        created_at=r.created_at, completed_at=r.completed_at,
+        created_at=r.created_at,
+        completed_at=r.completed_at,
     )

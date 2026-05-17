@@ -18,8 +18,9 @@ from src.config import LLM_SERVER_URL
 _execution_log: list[dict] = []
 
 
-async def run_task(task_id: str, description: str,
-                   tenant_id: str, priority: Priority) -> TaskResult:
+async def run_task(
+    task_id: str, description: str, tenant_id: str, priority: Priority
+) -> TaskResult:
     """Execute a full agent task through the plan-execute-summarise pipeline."""
     created = time.time()
     total_prompt_tokens = 0
@@ -36,12 +37,17 @@ async def run_task(task_id: str, description: str,
 
         if plan.get("error"):
             return TaskResult(
-                task_id=task_id, status=TaskStatus.FAILED,
-                tenant_id=tenant_id, priority=priority,
+                task_id=task_id,
+                status=TaskStatus.FAILED,
+                tenant_id=tenant_id,
+                priority=priority,
                 error=plan["error"],
-                token_usage={"prompt_tokens": total_prompt_tokens,
-                             "completion_tokens": total_completion_tokens},
-                created_at=created, completed_at=time.time(),
+                token_usage={
+                    "prompt_tokens": total_prompt_tokens,
+                    "completion_tokens": total_completion_tokens,
+                },
+                created_at=created,
+                completed_at=time.time(),
             )
 
         # ── Step 2: Tool execution ───────────────────────────
@@ -54,8 +60,7 @@ async def run_task(task_id: str, description: str,
 
         # ── Step 3: Summarise ────────────────────────────────
         summary_prompt = (
-            f"Summarise results for task: {description}\n"
-            f"Tool outputs: {tool_results}"
+            f"Summarise results for task: {description}\nTool outputs: {tool_results}"
         )
         summary = await call_llm(prompt=summary_prompt, max_tokens=512)
         total_prompt_tokens += summary.get("prompt_tokens", 0)
@@ -64,12 +69,17 @@ async def run_task(task_id: str, description: str,
         # Check if summary generation failed
         if summary.get("error") and summary.get("text") is None:
             return TaskResult(
-                task_id=task_id, status=TaskStatus.FAILED,
-                tenant_id=tenant_id, priority=priority,
+                task_id=task_id,
+                status=TaskStatus.FAILED,
+                tenant_id=tenant_id,
+                priority=priority,
                 error=summary["error"],
-                token_usage={"prompt_tokens": total_prompt_tokens,
-                             "completion_tokens": total_completion_tokens},
-                created_at=created, completed_at=time.time(),
+                token_usage={
+                    "prompt_tokens": total_prompt_tokens,
+                    "completion_tokens": total_completion_tokens,
+                },
+                created_at=created,
+                completed_at=time.time(),
             )
 
         # ── Step 4: Quality validation ─────────────────────
@@ -87,28 +97,37 @@ async def run_task(task_id: str, description: str,
         total_completion_tokens += validation.get("completion_tokens", 0)
 
         # Record execution details for audit trail
-        _execution_log.append({
-            "task_id": task_id,
-            "tenant_id": tenant_id,
-            "description": description,
-            "plan_prompt": f"Plan the following task: {description}",
-            "plan_response": plan,
-            "tool_results": tool_results,
-            "summary_prompt": summary_prompt,
-            "summary_response": summary,
-            "quality_score": validation.get("text", ""),
-            "token_usage": {"prompt": total_prompt_tokens,
-                            "completion": total_completion_tokens},
-            "completed_at": time.time(),
-        })
+        _execution_log.append(
+            {
+                "task_id": task_id,
+                "tenant_id": tenant_id,
+                "description": description,
+                "plan_prompt": f"Plan the following task: {description}",
+                "plan_response": plan,
+                "tool_results": tool_results,
+                "summary_prompt": summary_prompt,
+                "summary_response": summary,
+                "quality_score": validation.get("text", ""),
+                "token_usage": {
+                    "prompt": total_prompt_tokens,
+                    "completion": total_completion_tokens,
+                },
+                "completed_at": time.time(),
+            }
+        )
 
         return TaskResult(
-            task_id=task_id, status=TaskStatus.COMPLETED,
-            tenant_id=tenant_id, priority=priority,
+            task_id=task_id,
+            status=TaskStatus.COMPLETED,
+            tenant_id=tenant_id,
+            priority=priority,
             result=summary.get("text", ""),
-            token_usage={"prompt_tokens": total_prompt_tokens,
-                         "completion_tokens": total_completion_tokens},
-            created_at=created, completed_at=time.time(),
+            token_usage={
+                "prompt_tokens": total_prompt_tokens,
+                "completion_tokens": total_completion_tokens,
+            },
+            created_at=created,
+            completed_at=time.time(),
         )
 
     except Exception as e:
@@ -121,10 +140,15 @@ async def run_task(task_id: str, description: str,
             f"LLM endpoint: {LLM_SERVER_URL}"
         )
         return TaskResult(
-            task_id=task_id, status=TaskStatus.FAILED,
-            tenant_id=tenant_id, priority=priority,
+            task_id=task_id,
+            status=TaskStatus.FAILED,
+            tenant_id=tenant_id,
+            priority=priority,
             error=error_detail,
-            token_usage={"prompt_tokens": total_prompt_tokens,
-                         "completion_tokens": total_completion_tokens},
-            created_at=created, completed_at=time.time(),
+            token_usage={
+                "prompt_tokens": total_prompt_tokens,
+                "completion_tokens": total_completion_tokens,
+            },
+            created_at=created,
+            completed_at=time.time(),
         )

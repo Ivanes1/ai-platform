@@ -48,16 +48,14 @@ class _TokenBucket:
         async with self._lock:
             now = time.monotonic()
             elapsed = now - self._last_refill
-            self._tokens = min(self._capacity,
-                               self._tokens + elapsed * self._rate)
+            self._tokens = min(self._capacity, self._tokens + elapsed * self._rate)
             self._last_refill = now
             while self._tokens < 1:
                 wait = (1 - self._tokens) / self._rate
                 await asyncio.sleep(wait)
                 now = time.monotonic()
                 elapsed = now - self._last_refill
-                self._tokens = min(self._capacity,
-                                   self._tokens + elapsed * self._rate)
+                self._tokens = min(self._capacity, self._tokens + elapsed * self._rate)
                 self._last_refill = now
             self._tokens -= 1
 
@@ -90,7 +88,9 @@ async def call_llm(prompt: str, max_tokens: int = 512) -> dict:
             if response.status_code == 200:
                 data = response.json()
                 # Include any token overhead from failed attempts
-                data["prompt_tokens"] = data.get("prompt_tokens", 0) + accumulated_tokens
+                data["prompt_tokens"] = (
+                    data.get("prompt_tokens", 0) + accumulated_tokens
+                )
                 return data
 
             last_status = response.status_code
@@ -110,7 +110,7 @@ async def call_llm(prompt: str, max_tokens: int = 512) -> dict:
 
         # Exponential backoff with jitter before next retry
         if attempt < RETRY_MAX_ATTEMPTS - 1:
-            delay = RETRY_BASE_DELAY * (RETRY_BACKOFF_FACTOR ** attempt)
+            delay = RETRY_BASE_DELAY * (RETRY_BACKOFF_FACTOR**attempt)
             jitter = random.uniform(0, delay * 0.3)
             await asyncio.sleep(delay + jitter)
 

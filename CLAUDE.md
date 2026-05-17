@@ -54,6 +54,24 @@ A single shared `httpx.AsyncClient` is reused across calls for connection poolin
 
 All tunables live here. `LLM_SERVER_URL` is the only env-var override; everything else is hardcoded constants (timeout, concurrency cap, retry policy, rate limits, token costs).
 
+## Pre-commit checks
+
+Before finishing any code change, run the pre-commit hook to ensure formatting, linting, and type checks all pass:
+
+```bash
+.git/hooks/pre-commit
+```
+
+Individual checks (auto-fix variants where applicable):
+
+```bash
+uv run ruff format src/          # format in-place
+uv run ruff check --fix src/     # lint + auto-fix
+uv run pyright src/              # type check (no auto-fix)
+```
+
+The hook is installed at `.git/hooks/pre-commit` and runs automatically on `git commit`. It uses **ruff** (formatting + linting) and **pyright** (type checking), both declared as dev dependencies in `pyproject.toml`.
+
 ## Keeping This File Up-to-Date
 
 After any meaningful code modification, verify that this file accurately reflects the current codebase. Update it **only if there is an actual inconsistency** — if the file is already consistent with the code, make no edits.
