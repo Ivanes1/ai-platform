@@ -6,18 +6,28 @@ database, calculator, etc.) with realistic latency.
 
 import asyncio
 import random
+import time
+
+from src.telemetry import get_tracer, tool_execution_duration_seconds
 
 
 async def execute_tool(tool_name: str, args: dict) -> dict:
     """Execute a single tool and return its result."""
-    # Simulate variable latency per tool type
+    tracer = get_tracer()
     latency_map = {
         "search": (0.1, 0.5),
         "database_lookup": (0.05, 0.2),
         "calculator": (0.01, 0.05),
     }
     low, high = latency_map.get(tool_name, (0.05, 0.3))
-    await asyncio.sleep(random.uniform(low, high))
+
+    with tracer.start_as_current_span(f"tool.{tool_name}") as span:
+        span.set_attribute("tool.name", tool_name)
+        t0 = time.monotonic()
+        await asyncio.sleep(random.uniform(low, high))
+        tool_execution_duration_seconds.labels(tool_name=tool_name).observe(
+            time.monotonic() - t0
+        )
 
     return {
         "tool": tool_name,
