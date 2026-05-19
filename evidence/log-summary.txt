@@ -1,0 +1,4 @@
+Cache hits: 38
+Task failures: 29
+LLM retries: 127
+Total log lines: 2152

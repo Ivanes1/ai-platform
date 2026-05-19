@@ -1,0 +1,946 @@
+{
+    "data": [
+        {
+            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+            "spans": [
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "03925ec678a0a9df",
+                    "operationName": "POST",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "1291eeb9c6ae47cb"
+                        }
+                    ],
+                    "startTime": 1779179014509033,
+                    "duration": 951232,
+                    "tags": [
+                        {
+                            "key": "http.method",
+                            "type": "string",
+                            "value": "POST"
+                        },
+                        {
+                            "key": "http.url",
+                            "type": "string",
+                            "value": "http://mock-llm:8081/v1/inference"
+                        },
+                        {
+                            "key": "http.status_code",
+                            "type": "int64",
+                            "value": 200
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "client"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p1",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "1291eeb9c6ae47cb",
+                    "operationName": "llm.call",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "a70dbac0fdb67d01"
+                        }
+                    ],
+                    "startTime": 1779179014508636,
+                    "duration": 953293,
+                    "tags": [
+                        {
+                            "key": "llm.attempt",
+                            "type": "int64",
+                            "value": 0
+                        },
+                        {
+                            "key": "llm.max_tokens",
+                            "type": "int64",
+                            "value": 256
+                        },
+                        {
+                            "key": "llm.prompt_length",
+                            "type": "int64",
+                            "value": 79
+                        },
+                        {
+                            "key": "llm.stage",
+                            "type": "string",
+                            "value": "plan"
+                        },
+                        {
+                            "key": "llm.http_status",
+                            "type": "int64",
+                            "value": 200
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "a70dbac0fdb67d01",
+                    "operationName": "task.plan",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "c64060fb8169b670"
+                        }
+                    ],
+                    "startTime": 1779179014508567,
+                    "duration": 953423,
+                    "tags": [
+                        {
+                            "key": "prompt_length",
+                            "type": "int64",
+                            "value": 79
+                        },
+                        {
+                            "key": "prompt_tokens",
+                            "type": "int64",
+                            "value": 20
+                        },
+                        {
+                            "key": "completion_tokens",
+                            "type": "int64",
+                            "value": 126
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "ffc37c460c49231d",
+                    "operationName": "tool.database_lookup",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "d66148340f017ae8"
+                        }
+                    ],
+                    "startTime": 1779179015713972,
+                    "duration": 139010,
+                    "tags": [
+                        {
+                            "key": "tool.name",
+                            "type": "string",
+                            "value": "database_lookup"
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "4343ffc36e071e6f",
+                    "operationName": "tool.search",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "d66148340f017ae8"
+                        }
+                    ],
+                    "startTime": 1779179015462500,
+                    "duration": 250999,
+                    "tags": [
+                        {
+                            "key": "tool.name",
+                            "type": "string",
+                            "value": "search"
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "48ceed86051515c1",
+                    "operationName": "http.create_task",
+                    "references": [],
+                    "startTime": 1779178988228232,
+                    "duration": 30006357,
+                    "tags": [
+                        {
+                            "key": "task.id",
+                            "type": "string",
+                            "value": "23cbcc5d-b389-4c90-a929-b784a7829428"
+                        },
+                        {
+                            "key": "task.tenant_id",
+                            "type": "string",
+                            "value": "tenant-gamma"
+                        },
+                        {
+                            "key": "task.priority",
+                            "type": "string",
+                            "value": "urgent"
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "57b09618c24dc25b",
+                    "operationName": "tool.calculator",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "d66148340f017ae8"
+                        }
+                    ],
+                    "startTime": 1779179015853480,
+                    "duration": 23760,
+                    "tags": [
+                        {
+                            "key": "tool.name",
+                            "type": "string",
+                            "value": "calculator"
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "d66148340f017ae8",
+                    "operationName": "task.tools",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "c64060fb8169b670"
+                        }
+                    ],
+                    "startTime": 1779179015462305,
+                    "duration": 414994,
+                    "tags": [
+                        {
+                            "key": "tool_count",
+                            "type": "int64",
+                            "value": 3
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "bc4e0da616a2e128",
+                    "operationName": "POST",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "18599d3cac392376"
+                        }
+                    ],
+                    "startTime": 1779179017635942,
+                    "duration": 528597,
+                    "tags": [
+                        {
+                            "key": "http.method",
+                            "type": "string",
+                            "value": "POST"
+                        },
+                        {
+                            "key": "http.url",
+                            "type": "string",
+                            "value": "http://mock-llm:8081/v1/inference"
+                        },
+                        {
+                            "key": "http.status_code",
+                            "type": "int64",
+                            "value": 200
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "client"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p1",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "07f60350366033be",
+                    "operationName": "llm.call",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "7f01aacd4601c503"
+                        }
+                    ],
+                    "startTime": 1779179015877962,
+                    "duration": 3324,
+                    "tags": [
+                        {
+                            "key": "llm.attempt",
+                            "type": "int64",
+                            "value": 0
+                        },
+                        {
+                            "key": "llm.max_tokens",
+                            "type": "int64",
+                            "value": 512
+                        },
+                        {
+                            "key": "llm.prompt_length",
+                            "type": "int64",
+                            "value": 342
+                        },
+                        {
+                            "key": "llm.stage",
+                            "type": "string",
+                            "value": "summarize"
+                        },
+                        {
+                            "key": "llm.http_status",
+                            "type": "int64",
+                            "value": 500
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "otel.status_code",
+                            "type": "string",
+                            "value": "ERROR"
+                        },
+                        {
+                            "key": "error",
+                            "type": "bool",
+                            "value": true
+                        },
+                        {
+                            "key": "otel.status_description",
+                            "type": "string",
+                            "value": "LLM returned 500"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "18599d3cac392376",
+                    "operationName": "llm.call",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "7f01aacd4601c503"
+                        }
+                    ],
+                    "startTime": 1779179017635591,
+                    "duration": 530832,
+                    "tags": [
+                        {
+                            "key": "llm.attempt",
+                            "type": "int64",
+                            "value": 2
+                        },
+                        {
+                            "key": "llm.max_tokens",
+                            "type": "int64",
+                            "value": 512
+                        },
+                        {
+                            "key": "llm.prompt_length",
+                            "type": "int64",
+                            "value": 342
+                        },
+                        {
+                            "key": "llm.stage",
+                            "type": "string",
+                            "value": "summarize"
+                        },
+                        {
+                            "key": "llm.http_status",
+                            "type": "int64",
+                            "value": 200
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "c3b814ae6e51ba11",
+                    "operationName": "POST",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "e69291eb2b8f262d"
+                        }
+                    ],
+                    "startTime": 1779179018167599,
+                    "duration": 2185,
+                    "tags": [
+                        {
+                            "key": "http.method",
+                            "type": "string",
+                            "value": "POST"
+                        },
+                        {
+                            "key": "http.url",
+                            "type": "string",
+                            "value": "http://mock-llm:8081/v1/inference"
+                        },
+                        {
+                            "key": "http.status_code",
+                            "type": "int64",
+                            "value": 500
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "client"
+                        },
+                        {
+                            "key": "otel.status_code",
+                            "type": "string",
+                            "value": "ERROR"
+                        },
+                        {
+                            "key": "error",
+                            "type": "bool",
+                            "value": true
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p1",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "e69291eb2b8f262d",
+                    "operationName": "llm.call",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "e86030b6f7b548ef"
+                        }
+                    ],
+                    "startTime": 1779179018166979,
+                    "duration": 3697,
+                    "tags": [
+                        {
+                            "key": "llm.attempt",
+                            "type": "int64",
+                            "value": 0
+                        },
+                        {
+                            "key": "llm.max_tokens",
+                            "type": "int64",
+                            "value": 128
+                        },
+                        {
+                            "key": "llm.prompt_length",
+                            "type": "int64",
+                            "value": 191
+                        },
+                        {
+                            "key": "llm.stage",
+                            "type": "string",
+                            "value": "validate"
+                        },
+                        {
+                            "key": "llm.http_status",
+                            "type": "int64",
+                            "value": 500
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "otel.status_code",
+                            "type": "string",
+                            "value": "ERROR"
+                        },
+                        {
+                            "key": "error",
+                            "type": "bool",
+                            "value": true
+                        },
+                        {
+                            "key": "otel.status_description",
+                            "type": "string",
+                            "value": "LLM returned 500"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "c64060fb8169b670",
+                    "operationName": "task.execute",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "48ceed86051515c1"
+                        }
+                    ],
+                    "startTime": 1779179014508508,
+                    "duration": 3725225,
+                    "tags": [
+                        {
+                            "key": "task_id",
+                            "type": "string",
+                            "value": "23cbcc5d-b389-4c90-a929-b784a7829428"
+                        },
+                        {
+                            "key": "tenant_id",
+                            "type": "string",
+                            "value": "tenant-gamma"
+                        },
+                        {
+                            "key": "priority",
+                            "type": "string",
+                            "value": "urgent"
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "86aff8f32a0a8cce",
+                    "operationName": "POST",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "07f60350366033be"
+                        }
+                    ],
+                    "startTime": 1779179015878717,
+                    "duration": 1851,
+                    "tags": [
+                        {
+                            "key": "http.method",
+                            "type": "string",
+                            "value": "POST"
+                        },
+                        {
+                            "key": "http.url",
+                            "type": "string",
+                            "value": "http://mock-llm:8081/v1/inference"
+                        },
+                        {
+                            "key": "http.status_code",
+                            "type": "int64",
+                            "value": 500
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "client"
+                        },
+                        {
+                            "key": "otel.status_code",
+                            "type": "string",
+                            "value": "ERROR"
+                        },
+                        {
+                            "key": "error",
+                            "type": "bool",
+                            "value": true
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p1",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "e86030b6f7b548ef",
+                    "operationName": "task.validate",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "c64060fb8169b670"
+                        }
+                    ],
+                    "startTime": 1779179018166821,
+                    "duration": 66791,
+                    "tags": [
+                        {
+                            "key": "prompt_length",
+                            "type": "int64",
+                            "value": 191
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "c4b715bf15a88c7a",
+                    "operationName": "llm.call",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "7f01aacd4601c503"
+                        }
+                    ],
+                    "startTime": 1779179016499120,
+                    "duration": 4517,
+                    "tags": [
+                        {
+                            "key": "llm.attempt",
+                            "type": "int64",
+                            "value": 1
+                        },
+                        {
+                            "key": "llm.max_tokens",
+                            "type": "int64",
+                            "value": 512
+                        },
+                        {
+                            "key": "llm.prompt_length",
+                            "type": "int64",
+                            "value": 342
+                        },
+                        {
+                            "key": "llm.stage",
+                            "type": "string",
+                            "value": "summarize"
+                        },
+                        {
+                            "key": "llm.http_status",
+                            "type": "int64",
+                            "value": 500
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "otel.status_code",
+                            "type": "string",
+                            "value": "ERROR"
+                        },
+                        {
+                            "key": "error",
+                            "type": "bool",
+                            "value": true
+                        },
+                        {
+                            "key": "otel.status_description",
+                            "type": "string",
+                            "value": "LLM returned 500"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "7f01aacd4601c503",
+                    "operationName": "task.summarize",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "c64060fb8169b670"
+                        }
+                    ],
+                    "startTime": 1779179015877766,
+                    "duration": 2288727,
+                    "tags": [
+                        {
+                            "key": "prompt_length",
+                            "type": "int64",
+                            "value": 342
+                        },
+                        {
+                            "key": "prompt_tokens",
+                            "type": "int64",
+                            "value": 144
+                        },
+                        {
+                            "key": "completion_tokens",
+                            "type": "int64",
+                            "value": 228
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "internal"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                },
+                {
+                    "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                    "spanID": "ce9b5e35e40f7510",
+                    "operationName": "POST",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "11a629ded69cf84810e3f28d6c9e829e",
+                            "spanID": "c4b715bf15a88c7a"
+                        }
+                    ],
+                    "startTime": 1779179016500137,
+                    "duration": 2913,
+                    "tags": [
+                        {
+                            "key": "http.method",
+                            "type": "string",
+                            "value": "POST"
+                        },
+                        {
+                            "key": "http.url",
+                            "type": "string",
+                            "value": "http://mock-llm:8081/v1/inference"
+                        },
+                        {
+                            "key": "http.status_code",
+                            "type": "int64",
+                            "value": 500
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "client"
+                        },
+                        {
+                            "key": "otel.status_code",
+                            "type": "string",
+                            "value": "ERROR"
+                        },
+                        {
+                            "key": "error",
+                            "type": "bool",
+                            "value": true
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "otlp"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p1",
+                    "warnings": null
+                }
+            ],
+            "processes": {
+                "p1": {
+                    "serviceName": "agent-service",
+                    "tags": [
+                        {
+                            "key": "otel.library.name",
+                            "type": "string",
+                            "value": "opentelemetry.instrumentation.httpx"
+                        },
+                        {
+                            "key": "otel.library.version",
+                            "type": "string",
+                            "value": "0.62b1"
+                        }
+                    ]
+                },
+                "p2": {
+                    "serviceName": "agent-service",
+                    "tags": [
+                        {
+                            "key": "otel.library.name",
+                            "type": "string",
+                            "value": "agent-service"
+                        }
+                    ]
+                }
+            },
+            "warnings": null
+        }
+    ],
+    "total": 0,
+    "limit": 0,
+    "offset": 0,
+    "errors": null
+}

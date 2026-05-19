@@ -5,9 +5,11 @@ realistic multi-tenant traffic.  Run after starting the platform:
 
     python -m tests.test_load
 
-Adjust TOTAL_REQUESTS and CONCURRENCY to control load intensity.
-For sustained load testing, increase TOTAL_REQUESTS to 200+ and
-run multiple rounds.
+Configuration rationale:
+- 250 requests provides ~10-12 minute test duration for sustained load
+- Enables observation of memory growth, cache behavior, and retry patterns
+- Provides sufficient samples (~28 per tenant/priority combo) for P95/P99 metrics
+- 15 concurrent clients stress-test the MAX_CONCURRENT_TASKS=5 semaphore
 """
 
 import asyncio, httpx, random, time, sys
@@ -15,7 +17,7 @@ import asyncio, httpx, random, time, sys
 BASE_URL = "http://localhost:8080"
 TENANTS = ["tenant-alpha", "tenant-beta", "tenant-gamma"]
 PRIORITIES = ["urgent", "normal", "low"]
-TOTAL_REQUESTS = 100
+TOTAL_REQUESTS = 250
 CONCURRENCY = 15
 
 TASK_TEMPLATES = [
