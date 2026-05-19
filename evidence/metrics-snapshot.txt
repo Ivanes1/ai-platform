@@ -1,0 +1,448 @@
+# HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 24027.0
+python_gc_objects_collected_total{generation="1"} 7093.0
+python_gc_objects_collected_total{generation="2"} 1185.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_uncollectable_total{generation="1"} 0.0
+python_gc_objects_uncollectable_total{generation="2"} 0.0
+# HELP python_gc_collections_total Number of times this generation was collected
+# TYPE python_gc_collections_total counter
+python_gc_collections_total{generation="0"} 274.0
+python_gc_collections_total{generation="1"} 24.0
+python_gc_collections_total{generation="2"} 2.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation="CPython",major="3",minor="12",patchlevel="13",version="3.12.13"} 1.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.46731008e+09
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 8.679424e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.77917868357e+09
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 7.17
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 21.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP task_requests_total Total task requests
+# TYPE task_requests_total counter
+task_requests_total{priority="normal",status="completed",tenant_id="tenant-alpha"} 25.0
+task_requests_total{priority="normal",status="completed",tenant_id="tenant-beta"} 21.0
+task_requests_total{priority="urgent",status="completed",tenant_id="tenant-gamma"} 17.0
+task_requests_total{priority="low",status="completed",tenant_id="tenant-gamma"} 12.0
+task_requests_total{priority="low",status="completed",tenant_id="tenant-beta"} 20.0
+task_requests_total{priority="low",status="completed",tenant_id="tenant-alpha"} 28.0
+task_requests_total{priority="normal",status="completed_cached",tenant_id="tenant-beta"} 7.0
+task_requests_total{priority="low",status="completed_cached",tenant_id="tenant-beta"} 4.0
+task_requests_total{priority="urgent",status="completed",tenant_id="tenant-alpha"} 20.0
+task_requests_total{priority="normal",status="completed",tenant_id="tenant-gamma"} 20.0
+task_requests_total{priority="urgent",status="completed_cached",tenant_id="tenant-alpha"} 7.0
+task_requests_total{priority="urgent",status="completed",tenant_id="tenant-beta"} 20.0
+task_requests_total{priority="low",status="failed",tenant_id="tenant-beta"} 1.0
+task_requests_total{priority="urgent",status="failed",tenant_id="tenant-beta"} 1.0
+task_requests_total{priority="urgent",status="completed_cached",tenant_id="tenant-beta"} 9.0
+task_requests_total{priority="low",status="completed_cached",tenant_id="tenant-alpha"} 3.0
+task_requests_total{priority="low",status="failed",tenant_id="tenant-gamma"} 9.0
+task_requests_total{priority="normal",status="failed",tenant_id="tenant-gamma"} 9.0
+task_requests_total{priority="normal",status="completed_cached",tenant_id="tenant-alpha"} 4.0
+task_requests_total{priority="urgent",status="failed",tenant_id="tenant-gamma"} 9.0
+task_requests_total{priority="normal",status="completed_cached",tenant_id="tenant-gamma"} 2.0
+task_requests_total{priority="low",status="completed_cached",tenant_id="tenant-gamma"} 2.0
+# HELP task_requests_created Total task requests
+# TYPE task_requests_created gauge
+task_requests_created{priority="normal",status="completed",tenant_id="tenant-alpha"} 1.7791787649617987e+09
+task_requests_created{priority="normal",status="completed",tenant_id="tenant-beta"} 1.7791787656581235e+09
+task_requests_created{priority="urgent",status="completed",tenant_id="tenant-gamma"} 1.7791787668611088e+09
+task_requests_created{priority="low",status="completed",tenant_id="tenant-gamma"} 1.7791787691878111e+09
+task_requests_created{priority="low",status="completed",tenant_id="tenant-beta"} 1.7791787707175853e+09
+task_requests_created{priority="low",status="completed",tenant_id="tenant-alpha"} 1.7791787727418458e+09
+task_requests_created{priority="normal",status="completed_cached",tenant_id="tenant-beta"} 1.7791787733177524e+09
+task_requests_created{priority="low",status="completed_cached",tenant_id="tenant-beta"} 1.779178777821901e+09
+task_requests_created{priority="urgent",status="completed",tenant_id="tenant-alpha"} 1.7791787778483639e+09
+task_requests_created{priority="normal",status="completed",tenant_id="tenant-gamma"} 1.779178780112778e+09
+task_requests_created{priority="urgent",status="completed_cached",tenant_id="tenant-alpha"} 1.7791787915981133e+09
+task_requests_created{priority="urgent",status="completed",tenant_id="tenant-beta"} 1.7791787989871876e+09
+task_requests_created{priority="low",status="failed",tenant_id="tenant-beta"} 1.7791788016780338e+09
+task_requests_created{priority="urgent",status="failed",tenant_id="tenant-beta"} 1.7791788033320038e+09
+task_requests_created{priority="urgent",status="completed_cached",tenant_id="tenant-beta"} 1.779178819205499e+09
+task_requests_created{priority="low",status="completed_cached",tenant_id="tenant-alpha"} 1.7791788201464124e+09
+task_requests_created{priority="low",status="failed",tenant_id="tenant-gamma"} 1.7791788374661899e+09
+task_requests_created{priority="normal",status="failed",tenant_id="tenant-gamma"} 1.7791788418651776e+09
+task_requests_created{priority="normal",status="completed_cached",tenant_id="tenant-alpha"} 1.7791788652176878e+09
+task_requests_created{priority="urgent",status="failed",tenant_id="tenant-gamma"} 1.7791788721752737e+09
+task_requests_created{priority="normal",status="completed_cached",tenant_id="tenant-gamma"} 1.7791789553710415e+09
+task_requests_created{priority="low",status="completed_cached",tenant_id="tenant-gamma"} 1.7791789767521217e+09
+# HELP cache_hits_total Cache hits for identical (tenant, description) pairs
+# TYPE cache_hits_total counter
+cache_hits_total{tenant_id="tenant-beta"} 20.0
+cache_hits_total{tenant_id="tenant-alpha"} 14.0
+cache_hits_total{tenant_id="tenant-gamma"} 4.0
+# HELP cache_hits_created Cache hits for identical (tenant, description) pairs
+# TYPE cache_hits_created gauge
+cache_hits_created{tenant_id="tenant-beta"} 1.7791787733177133e+09
+cache_hits_created{tenant_id="tenant-alpha"} 1.7791787915980837e+09
+cache_hits_created{tenant_id="tenant-gamma"} 1.7791789553710022e+09
+# HELP llm_calls_total Total LLM call completions
+# TYPE llm_calls_total counter
+llm_calls_total{http_status="200",stage="plan"} 203.0
+llm_calls_total{http_status="200",stage="summarize"} 190.0
+llm_calls_total{http_status="200",stage="validate"} 183.0
+# HELP llm_calls_created Total LLM call completions
+# TYPE llm_calls_created gauge
+llm_calls_created{http_status="200",stage="plan"} 1.7791787631759005e+09
+llm_calls_created{http_status="200",stage="summarize"} 1.7791787641965475e+09
+llm_calls_created{http_status="200",stage="validate"} 1.7791787649610963e+09
+# HELP llm_retries_total LLM retry attempts
+# TYPE llm_retries_total counter
+llm_retries_total{reason="rate_limited"} 38.0
+llm_retries_total{reason="server_error"} 89.0
+# HELP llm_retries_created LLM retry attempts
+# TYPE llm_retries_created gauge
+llm_retries_created{reason="rate_limited"} 1.7791787630219169e+09
+llm_retries_created{reason="server_error"} 1.779178765009546e+09
+# HELP task_duration_seconds End-to-end task duration in seconds
+# TYPE task_duration_seconds histogram
+task_duration_seconds_bucket{le="0.1",priority="normal",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="0.5",priority="normal",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="1.0",priority="normal",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="2.0",priority="normal",tenant_id="tenant-alpha"} 1.0
+task_duration_seconds_bucket{le="5.0",priority="normal",tenant_id="tenant-alpha"} 1.0
+task_duration_seconds_bucket{le="10.0",priority="normal",tenant_id="tenant-alpha"} 2.0
+task_duration_seconds_bucket{le="30.0",priority="normal",tenant_id="tenant-alpha"} 25.0
+task_duration_seconds_bucket{le="+Inf",priority="normal",tenant_id="tenant-alpha"} 25.0
+task_duration_seconds_count{priority="normal",tenant_id="tenant-alpha"} 25.0
+task_duration_seconds_sum{priority="normal",tenant_id="tenant-alpha"} 388.5791671371553
+task_duration_seconds_bucket{le="0.1",priority="normal",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="0.5",priority="normal",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="1.0",priority="normal",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="2.0",priority="normal",tenant_id="tenant-beta"} 1.0
+task_duration_seconds_bucket{le="5.0",priority="normal",tenant_id="tenant-beta"} 8.0
+task_duration_seconds_bucket{le="10.0",priority="normal",tenant_id="tenant-beta"} 10.0
+task_duration_seconds_bucket{le="30.0",priority="normal",tenant_id="tenant-beta"} 21.0
+task_duration_seconds_bucket{le="+Inf",priority="normal",tenant_id="tenant-beta"} 21.0
+task_duration_seconds_count{priority="normal",tenant_id="tenant-beta"} 21.0
+task_duration_seconds_sum{priority="normal",tenant_id="tenant-beta"} 213.88748951489106
+task_duration_seconds_bucket{le="0.1",priority="urgent",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="0.5",priority="urgent",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="1.0",priority="urgent",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="2.0",priority="urgent",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="5.0",priority="urgent",tenant_id="tenant-gamma"} 1.0
+task_duration_seconds_bucket{le="10.0",priority="urgent",tenant_id="tenant-gamma"} 2.0
+task_duration_seconds_bucket{le="30.0",priority="urgent",tenant_id="tenant-gamma"} 19.0
+task_duration_seconds_bucket{le="+Inf",priority="urgent",tenant_id="tenant-gamma"} 26.0
+task_duration_seconds_count{priority="urgent",tenant_id="tenant-gamma"} 26.0
+task_duration_seconds_sum{priority="urgent",tenant_id="tenant-gamma"} 625.698039744515
+task_duration_seconds_bucket{le="0.1",priority="low",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="0.5",priority="low",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="1.0",priority="low",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="2.0",priority="low",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="5.0",priority="low",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="10.0",priority="low",tenant_id="tenant-gamma"} 1.0
+task_duration_seconds_bucket{le="30.0",priority="low",tenant_id="tenant-gamma"} 12.0
+task_duration_seconds_bucket{le="+Inf",priority="low",tenant_id="tenant-gamma"} 21.0
+task_duration_seconds_count{priority="low",tenant_id="tenant-gamma"} 21.0
+task_duration_seconds_sum{priority="low",tenant_id="tenant-gamma"} 530.0657457420602
+task_duration_seconds_bucket{le="0.1",priority="low",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="0.5",priority="low",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="1.0",priority="low",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="2.0",priority="low",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="5.0",priority="low",tenant_id="tenant-beta"} 4.0
+task_duration_seconds_bucket{le="10.0",priority="low",tenant_id="tenant-beta"} 9.0
+task_duration_seconds_bucket{le="30.0",priority="low",tenant_id="tenant-beta"} 20.0
+task_duration_seconds_bucket{le="+Inf",priority="low",tenant_id="tenant-beta"} 21.0
+task_duration_seconds_count{priority="low",tenant_id="tenant-beta"} 21.0
+task_duration_seconds_sum{priority="low",tenant_id="tenant-beta"} 256.517947324086
+task_duration_seconds_bucket{le="0.1",priority="low",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="0.5",priority="low",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="1.0",priority="low",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="2.0",priority="low",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="5.0",priority="low",tenant_id="tenant-alpha"} 2.0
+task_duration_seconds_bucket{le="10.0",priority="low",tenant_id="tenant-alpha"} 10.0
+task_duration_seconds_bucket{le="30.0",priority="low",tenant_id="tenant-alpha"} 28.0
+task_duration_seconds_bucket{le="+Inf",priority="low",tenant_id="tenant-alpha"} 28.0
+task_duration_seconds_count{priority="low",tenant_id="tenant-alpha"} 28.0
+task_duration_seconds_sum{priority="low",tenant_id="tenant-alpha"} 386.0522445535753
+task_duration_seconds_bucket{le="0.1",priority="urgent",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="0.5",priority="urgent",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="1.0",priority="urgent",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="2.0",priority="urgent",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="5.0",priority="urgent",tenant_id="tenant-alpha"} 0.0
+task_duration_seconds_bucket{le="10.0",priority="urgent",tenant_id="tenant-alpha"} 2.0
+task_duration_seconds_bucket{le="30.0",priority="urgent",tenant_id="tenant-alpha"} 20.0
+task_duration_seconds_bucket{le="+Inf",priority="urgent",tenant_id="tenant-alpha"} 20.0
+task_duration_seconds_count{priority="urgent",tenant_id="tenant-alpha"} 20.0
+task_duration_seconds_sum{priority="urgent",tenant_id="tenant-alpha"} 302.7845805569086
+task_duration_seconds_bucket{le="0.1",priority="normal",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="0.5",priority="normal",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="1.0",priority="normal",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="2.0",priority="normal",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="5.0",priority="normal",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="10.0",priority="normal",tenant_id="tenant-gamma"} 0.0
+task_duration_seconds_bucket{le="30.0",priority="normal",tenant_id="tenant-gamma"} 20.0
+task_duration_seconds_bucket{le="+Inf",priority="normal",tenant_id="tenant-gamma"} 29.0
+task_duration_seconds_count{priority="normal",tenant_id="tenant-gamma"} 29.0
+task_duration_seconds_sum{priority="normal",tenant_id="tenant-gamma"} 759.0421789728571
+task_duration_seconds_bucket{le="0.1",priority="urgent",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="0.5",priority="urgent",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="1.0",priority="urgent",tenant_id="tenant-beta"} 0.0
+task_duration_seconds_bucket{le="2.0",priority="urgent",tenant_id="tenant-beta"} 1.0
+task_duration_seconds_bucket{le="5.0",priority="urgent",tenant_id="tenant-beta"} 7.0
+task_duration_seconds_bucket{le="10.0",priority="urgent",tenant_id="tenant-beta"} 12.0
+task_duration_seconds_bucket{le="30.0",priority="urgent",tenant_id="tenant-beta"} 20.0
+task_duration_seconds_bucket{le="+Inf",priority="urgent",tenant_id="tenant-beta"} 21.0
+task_duration_seconds_count{priority="urgent",tenant_id="tenant-beta"} 21.0
+task_duration_seconds_sum{priority="urgent",tenant_id="tenant-beta"} 233.8686047301162
+# HELP task_duration_seconds_created End-to-end task duration in seconds
+# TYPE task_duration_seconds_created gauge
+task_duration_seconds_created{priority="normal",tenant_id="tenant-alpha"} 1.7791787649618247e+09
+task_duration_seconds_created{priority="normal",tenant_id="tenant-beta"} 1.7791787656581497e+09
+task_duration_seconds_created{priority="urgent",tenant_id="tenant-gamma"} 1.7791787668611567e+09
+task_duration_seconds_created{priority="low",tenant_id="tenant-gamma"} 1.7791787691878633e+09
+task_duration_seconds_created{priority="low",tenant_id="tenant-beta"} 1.7791787707176132e+09
+task_duration_seconds_created{priority="low",tenant_id="tenant-alpha"} 1.779178772741886e+09
+task_duration_seconds_created{priority="urgent",tenant_id="tenant-alpha"} 1.779178777848391e+09
+task_duration_seconds_created{priority="normal",tenant_id="tenant-gamma"} 1.7791787801128345e+09
+task_duration_seconds_created{priority="urgent",tenant_id="tenant-beta"} 1.779178798987202e+09
+# HELP pipeline_stage_duration_seconds Duration of each pipeline stage in seconds
+# TYPE pipeline_stage_duration_seconds histogram
+pipeline_stage_duration_seconds_bucket{le="0.005",stage="plan"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.01",stage="plan"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.025",stage="plan"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.05",stage="plan"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.075",stage="plan"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.1",stage="plan"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.25",stage="plan"} 16.0
+pipeline_stage_duration_seconds_bucket{le="0.5",stage="plan"} 57.0
+pipeline_stage_duration_seconds_bucket{le="0.75",stage="plan"} 111.0
+pipeline_stage_duration_seconds_bucket{le="1.0",stage="plan"} 166.0
+pipeline_stage_duration_seconds_bucket{le="2.5",stage="plan"} 187.0
+pipeline_stage_duration_seconds_bucket{le="5.0",stage="plan"} 189.0
+pipeline_stage_duration_seconds_bucket{le="7.5",stage="plan"} 196.0
+pipeline_stage_duration_seconds_bucket{le="10.0",stage="plan"} 202.0
+pipeline_stage_duration_seconds_bucket{le="+Inf",stage="plan"} 203.0
+pipeline_stage_duration_seconds_count{stage="plan"} 203.0
+pipeline_stage_duration_seconds_sum{stage="plan"} 241.07313665910624
+pipeline_stage_duration_seconds_bucket{le="0.005",stage="execute"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.01",stage="execute"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.025",stage="execute"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.05",stage="execute"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.075",stage="execute"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.1",stage="execute"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.25",stage="execute"} 4.0
+pipeline_stage_duration_seconds_bucket{le="0.5",stage="execute"} 111.0
+pipeline_stage_duration_seconds_bucket{le="0.75",stage="execute"} 198.0
+pipeline_stage_duration_seconds_bucket{le="1.0",stage="execute"} 198.0
+pipeline_stage_duration_seconds_bucket{le="2.5",stage="execute"} 198.0
+pipeline_stage_duration_seconds_bucket{le="5.0",stage="execute"} 198.0
+pipeline_stage_duration_seconds_bucket{le="7.5",stage="execute"} 198.0
+pipeline_stage_duration_seconds_bucket{le="10.0",stage="execute"} 198.0
+pipeline_stage_duration_seconds_bucket{le="+Inf",stage="execute"} 198.0
+pipeline_stage_duration_seconds_count{stage="execute"} 198.0
+pipeline_stage_duration_seconds_sum{stage="execute"} 93.62946778559126
+pipeline_stage_duration_seconds_bucket{le="0.005",stage="summarize"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.01",stage="summarize"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.025",stage="summarize"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.05",stage="summarize"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.075",stage="summarize"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.1",stage="summarize"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.25",stage="summarize"} 22.0
+pipeline_stage_duration_seconds_bucket{le="0.5",stage="summarize"} 67.0
+pipeline_stage_duration_seconds_bucket{le="0.75",stage="summarize"} 107.0
+pipeline_stage_duration_seconds_bucket{le="1.0",stage="summarize"} 158.0
+pipeline_stage_duration_seconds_bucket{le="2.5",stage="summarize"} 181.0
+pipeline_stage_duration_seconds_bucket{le="5.0",stage="summarize"} 183.0
+pipeline_stage_duration_seconds_bucket{le="7.5",stage="summarize"} 185.0
+pipeline_stage_duration_seconds_bucket{le="10.0",stage="summarize"} 188.0
+pipeline_stage_duration_seconds_bucket{le="+Inf",stage="summarize"} 190.0
+pipeline_stage_duration_seconds_count{stage="summarize"} 190.0
+pipeline_stage_duration_seconds_sum{stage="summarize"} 190.97493437910452
+pipeline_stage_duration_seconds_bucket{le="0.005",stage="validate"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.01",stage="validate"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.025",stage="validate"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.05",stage="validate"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.075",stage="validate"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.1",stage="validate"} 0.0
+pipeline_stage_duration_seconds_bucket{le="0.25",stage="validate"} 33.0
+pipeline_stage_duration_seconds_bucket{le="0.5",stage="validate"} 71.0
+pipeline_stage_duration_seconds_bucket{le="0.75",stage="validate"} 108.0
+pipeline_stage_duration_seconds_bucket{le="1.0",stage="validate"} 157.0
+pipeline_stage_duration_seconds_bucket{le="2.5",stage="validate"} 178.0
+pipeline_stage_duration_seconds_bucket{le="5.0",stage="validate"} 179.0
+pipeline_stage_duration_seconds_bucket{le="7.5",stage="validate"} 181.0
+pipeline_stage_duration_seconds_bucket{le="10.0",stage="validate"} 182.0
+pipeline_stage_duration_seconds_bucket{le="+Inf",stage="validate"} 183.0
+pipeline_stage_duration_seconds_count{stage="validate"} 183.0
+pipeline_stage_duration_seconds_sum{stage="validate"} 151.50511140190065
+# HELP pipeline_stage_duration_seconds_created Duration of each pipeline stage in seconds
+# TYPE pipeline_stage_duration_seconds_created gauge
+pipeline_stage_duration_seconds_created{stage="plan"} 1.7791787631759923e+09
+pipeline_stage_duration_seconds_created{stage="execute"} 1.7791787636928277e+09
+pipeline_stage_duration_seconds_created{stage="summarize"} 1.7791787641966097e+09
+pipeline_stage_duration_seconds_created{stage="validate"} 1.7791787649613152e+09
+# HELP llm_call_duration_seconds Duration of each LLM call attempt in seconds
+# TYPE llm_call_duration_seconds histogram
+llm_call_duration_seconds_bucket{le="0.005",stage="plan"} 33.0
+llm_call_duration_seconds_bucket{le="0.01",stage="plan"} 40.0
+llm_call_duration_seconds_bucket{le="0.025",stage="plan"} 42.0
+llm_call_duration_seconds_bucket{le="0.05",stage="plan"} 42.0
+llm_call_duration_seconds_bucket{le="0.075",stage="plan"} 42.0
+llm_call_duration_seconds_bucket{le="0.1",stage="plan"} 42.0
+llm_call_duration_seconds_bucket{le="0.25",stage="plan"} 63.0
+llm_call_duration_seconds_bucket{le="0.5",stage="plan"} 113.0
+llm_call_duration_seconds_bucket{le="0.75",stage="plan"} 177.0
+llm_call_duration_seconds_bucket{le="1.0",stage="plan"} 230.0
+llm_call_duration_seconds_bucket{le="2.5",stage="plan"} 231.0
+llm_call_duration_seconds_bucket{le="5.0",stage="plan"} 231.0
+llm_call_duration_seconds_bucket{le="7.5",stage="plan"} 239.0
+llm_call_duration_seconds_bucket{le="10.0",stage="plan"} 244.0
+llm_call_duration_seconds_bucket{le="+Inf",stage="plan"} 245.0
+llm_call_duration_seconds_count{stage="plan"} 245.0
+llm_call_duration_seconds_sum{stage="plan"} 214.98469952656887
+llm_call_duration_seconds_bucket{le="0.005",stage="summarize"} 32.0
+llm_call_duration_seconds_bucket{le="0.01",stage="summarize"} 44.0
+llm_call_duration_seconds_bucket{le="0.025",stage="summarize"} 44.0
+llm_call_duration_seconds_bucket{le="0.05",stage="summarize"} 44.0
+llm_call_duration_seconds_bucket{le="0.075",stage="summarize"} 44.0
+llm_call_duration_seconds_bucket{le="0.1",stage="summarize"} 44.0
+llm_call_duration_seconds_bucket{le="0.25",stage="summarize"} 75.0
+llm_call_duration_seconds_bucket{le="0.5",stage="summarize"} 125.0
+llm_call_duration_seconds_bucket{le="0.75",stage="summarize"} 170.0
+llm_call_duration_seconds_bucket{le="1.0",stage="summarize"} 223.0
+llm_call_duration_seconds_bucket{le="2.5",stage="summarize"} 227.0
+llm_call_duration_seconds_bucket{le="5.0",stage="summarize"} 227.0
+llm_call_duration_seconds_bucket{le="7.5",stage="summarize"} 229.0
+llm_call_duration_seconds_bucket{le="10.0",stage="summarize"} 232.0
+llm_call_duration_seconds_bucket{le="+Inf",stage="summarize"} 234.0
+llm_call_duration_seconds_count{stage="summarize"} 234.0
+llm_call_duration_seconds_sum{stage="summarize"} 161.97126461938024
+llm_call_duration_seconds_bucket{le="0.005",stage="validate"} 36.0
+llm_call_duration_seconds_bucket{le="0.01",stage="validate"} 41.0
+llm_call_duration_seconds_bucket{le="0.025",stage="validate"} 41.0
+llm_call_duration_seconds_bucket{le="0.05",stage="validate"} 41.0
+llm_call_duration_seconds_bucket{le="0.075",stage="validate"} 41.0
+llm_call_duration_seconds_bucket{le="0.1",stage="validate"} 41.0
+llm_call_duration_seconds_bucket{le="0.25",stage="validate"} 79.0
+llm_call_duration_seconds_bucket{le="0.5",stage="validate"} 126.0
+llm_call_duration_seconds_bucket{le="0.75",stage="validate"} 174.0
+llm_call_duration_seconds_bucket{le="1.0",stage="validate"} 220.0
+llm_call_duration_seconds_bucket{le="2.5",stage="validate"} 220.0
+llm_call_duration_seconds_bucket{le="5.0",stage="validate"} 220.0
+llm_call_duration_seconds_bucket{le="7.5",stage="validate"} 223.0
+llm_call_duration_seconds_bucket{le="10.0",stage="validate"} 223.0
+llm_call_duration_seconds_bucket{le="+Inf",stage="validate"} 224.0
+llm_call_duration_seconds_count{stage="validate"} 224.0
+llm_call_duration_seconds_sum{stage="validate"} 125.27797289798036
+# HELP llm_call_duration_seconds_created Duration of each LLM call attempt in seconds
+# TYPE llm_call_duration_seconds_created gauge
+llm_call_duration_seconds_created{stage="plan"} 1.7791787630218768e+09
+llm_call_duration_seconds_created{stage="summarize"} 1.7791787641964574e+09
+llm_call_duration_seconds_created{stage="validate"} 1.7791787649609e+09
+# HELP tool_execution_duration_seconds Duration of each tool execution in seconds
+# TYPE tool_execution_duration_seconds histogram
+tool_execution_duration_seconds_bucket{le="0.005",tool_name="search"} 0.0
+tool_execution_duration_seconds_bucket{le="0.01",tool_name="search"} 0.0
+tool_execution_duration_seconds_bucket{le="0.025",tool_name="search"} 0.0
+tool_execution_duration_seconds_bucket{le="0.05",tool_name="search"} 0.0
+tool_execution_duration_seconds_bucket{le="0.075",tool_name="search"} 0.0
+tool_execution_duration_seconds_bucket{le="0.1",tool_name="search"} 0.0
+tool_execution_duration_seconds_bucket{le="0.25",tool_name="search"} 67.0
+tool_execution_duration_seconds_bucket{le="0.5",tool_name="search"} 200.0
+tool_execution_duration_seconds_bucket{le="0.75",tool_name="search"} 201.0
+tool_execution_duration_seconds_bucket{le="1.0",tool_name="search"} 201.0
+tool_execution_duration_seconds_bucket{le="2.5",tool_name="search"} 201.0
+tool_execution_duration_seconds_bucket{le="5.0",tool_name="search"} 201.0
+tool_execution_duration_seconds_bucket{le="7.5",tool_name="search"} 201.0
+tool_execution_duration_seconds_bucket{le="10.0",tool_name="search"} 201.0
+tool_execution_duration_seconds_bucket{le="+Inf",tool_name="search"} 201.0
+tool_execution_duration_seconds_count{tool_name="search"} 201.0
+tool_execution_duration_seconds_sum{tool_name="search"} 62.70385236432776
+tool_execution_duration_seconds_bucket{le="0.005",tool_name="database_lookup"} 0.0
+tool_execution_duration_seconds_bucket{le="0.01",tool_name="database_lookup"} 0.0
+tool_execution_duration_seconds_bucket{le="0.025",tool_name="database_lookup"} 0.0
+tool_execution_duration_seconds_bucket{le="0.05",tool_name="database_lookup"} 0.0
+tool_execution_duration_seconds_bucket{le="0.075",tool_name="database_lookup"} 31.0
+tool_execution_duration_seconds_bucket{le="0.1",tool_name="database_lookup"} 62.0
+tool_execution_duration_seconds_bucket{le="0.25",tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_bucket{le="0.5",tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_bucket{le="0.75",tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_bucket{le="1.0",tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_bucket{le="2.5",tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_bucket{le="5.0",tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_bucket{le="7.5",tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_bucket{le="10.0",tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_bucket{le="+Inf",tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_count{tool_name="database_lookup"} 198.0
+tool_execution_duration_seconds_sum{tool_name="database_lookup"} 25.304151934105903
+tool_execution_duration_seconds_bucket{le="0.005",tool_name="calculator"} 0.0
+tool_execution_duration_seconds_bucket{le="0.01",tool_name="calculator"} 0.0
+tool_execution_duration_seconds_bucket{le="0.025",tool_name="calculator"} 70.0
+tool_execution_duration_seconds_bucket{le="0.05",tool_name="calculator"} 186.0
+tool_execution_duration_seconds_bucket{le="0.075",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="0.1",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="0.25",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="0.5",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="0.75",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="1.0",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="2.5",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="5.0",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="7.5",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="10.0",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_bucket{le="+Inf",tool_name="calculator"} 198.0
+tool_execution_duration_seconds_count{tool_name="calculator"} 198.0
+tool_execution_duration_seconds_sum{tool_name="calculator"} 6.256653749616817
+# HELP tool_execution_duration_seconds_created Duration of each tool execution in seconds
+# TYPE tool_execution_duration_seconds_created gauge
+tool_execution_duration_seconds_created{tool_name="search"} 1.7791787635601642e+09
+tool_execution_duration_seconds_created{tool_name="database_lookup"} 1.7791787636788301e+09
+tool_execution_duration_seconds_created{tool_name="calculator"} 1.7791787636925445e+09
+# HELP active_tasks Number of tasks currently executing through the pipeline
+# TYPE active_tasks gauge
+active_tasks 0.0
+# HELP token_usage_total Cumulative token usage (prompt and completion)
+# TYPE token_usage_total counter
+token_usage_total{tenant_id="tenant-alpha",token_type="prompt"} 12231.0
+token_usage_total{tenant_id="tenant-alpha",token_type="completion"} 39170.0
+token_usage_total{tenant_id="tenant-beta",token_type="prompt"} 10299.0
+token_usage_total{tenant_id="tenant-beta",token_type="completion"} 32949.0
+token_usage_total{tenant_id="tenant-gamma",token_type="prompt"} 8323.0
+token_usage_total{tenant_id="tenant-gamma",token_type="completion"} 26169.0
+# HELP token_usage_created Cumulative token usage (prompt and completion)
+# TYPE token_usage_created gauge
+token_usage_created{tenant_id="tenant-alpha",token_type="prompt"} 1.7791787649618611e+09
+token_usage_created{tenant_id="tenant-alpha",token_type="completion"} 1.7791787649618726e+09
+token_usage_created{tenant_id="tenant-beta",token_type="prompt"} 1.7791787656581883e+09
+token_usage_created{tenant_id="tenant-beta",token_type="completion"} 1.779178765658198e+09
+token_usage_created{tenant_id="tenant-gamma",token_type="prompt"} 1.7791787668612227e+09
+token_usage_created{tenant_id="tenant-gamma",token_type="completion"} 1.7791787668612478e+09
+# HELP rate_limiter_wait_seconds Time blocked waiting for a token-bucket slot before each LLM call
+# TYPE rate_limiter_wait_seconds histogram
+rate_limiter_wait_seconds_bucket{le="0.005"} 721.0
+rate_limiter_wait_seconds_bucket{le="0.01"} 721.0
+rate_limiter_wait_seconds_bucket{le="0.025"} 721.0
+rate_limiter_wait_seconds_bucket{le="0.05"} 721.0
+rate_limiter_wait_seconds_bucket{le="0.075"} 721.0
+rate_limiter_wait_seconds_bucket{le="0.1"} 721.0
+rate_limiter_wait_seconds_bucket{le="0.25"} 721.0
+rate_limiter_wait_seconds_bucket{le="0.5"} 721.0
+rate_limiter_wait_seconds_bucket{le="0.75"} 721.0
+rate_limiter_wait_seconds_bucket{le="1.0"} 721.0
+rate_limiter_wait_seconds_bucket{le="2.5"} 721.0
+rate_limiter_wait_seconds_bucket{le="5.0"} 721.0
+rate_limiter_wait_seconds_bucket{le="7.5"} 721.0
+rate_limiter_wait_seconds_bucket{le="10.0"} 721.0
+rate_limiter_wait_seconds_bucket{le="+Inf"} 721.0
+rate_limiter_wait_seconds_count 721.0
+rate_limiter_wait_seconds_sum 0.014154171105474234
+# HELP rate_limiter_wait_seconds_created Time blocked waiting for a token-bucket slot before each LLM call
+# TYPE rate_limiter_wait_seconds_created gauge
+rate_limiter_wait_seconds_created 1.7791786848545778e+09
