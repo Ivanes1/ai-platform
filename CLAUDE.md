@@ -66,11 +66,11 @@ Central setup module called once at app startup via `setup_telemetry(app)` in `m
 
 In addition to `agent-service` and `mock-llm`, three observability services are included:
 
-| Service      | Image                           | Port(s)               |
-| ------------ | ------------------------------- | --------------------- |
+| Service      | Image                           | Port(s)                 |
+| ------------ | ------------------------------- | ----------------------- |
 | `jaeger`     | `jaegertracing/all-in-one:1.57` | 4317 (OTLP), 16686 (UI) |
-| `prometheus` | `prom/prometheus:v2.51.0`       | 9090                  |
-| `grafana`    | `grafana/grafana:10.4.2`        | 3000                  |
+| `prometheus` | `prom/prometheus:v2.51.0`       | 9090                    |
+| `grafana`    | `grafana/grafana:10.4.2`        | 3000                    |
 
 Scrape config is in `prometheus.yml`; Grafana datasource and dashboard are in `grafana/provisioning/`.
 

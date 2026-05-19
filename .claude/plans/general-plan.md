@@ -1,11 +1,13 @@
 # AI Platform — Observability & Reliability Improvement Plan
 
 ## Context
+
 We have a multi-tenant AI agent execution service with reliability, performance, and cost efficiency gaps. The goal is to instrument it with a production-grade observability stack, use that telemetry to surface and diagnose issues, fix the highest-impact ones, and document the system's production readiness posture.
 
 ---
 
 ## Step 1: Add Observability Stack
+
 Set up the observability infrastructure and instrument the code.
 
 - **Infrastructure**: Add Jaeger (tracing), Prometheus (metrics), and structured logging to `docker-compose.yml`
@@ -19,6 +21,7 @@ Set up the observability infrastructure and instrument the code.
 ---
 
 ## Step 2: Run Load Tests & Collect Evidence
+
 Run `python -m tests.test_load` against the instrumented service and capture telemetry.
 
 - Run a sustained load test (not just a short burst)
@@ -28,9 +31,11 @@ Run `python -m tests.test_load` against the instrumented service and capture tel
 ---
 
 ## Step 3: Diagnose Issues & Write DIAGNOSIS.md
+
 Analyze the telemetry to identify and document each issue.
 
 Known candidate issues to investigate (from code inspection):
+
 1. **Unbounded memory** — `_execution_log` and response cache grow forever → OOM risk
 2. **Sequential tool execution** — 3 tools run one-by-one despite being independent → unnecessary latency
 3. **Priority ignored** — priority field not used in scheduling or caching; urgent tasks may wait behind low-priority ones
@@ -45,9 +50,11 @@ Write `DIAGNOSIS.md` with: evidence (trace screenshots, metric values, log excer
 ---
 
 ## Step 4: Fix Issues & Show Before/After
+
 Implement fixes for the highest-impact issues (aim for 2–3), re-run the load test, and capture before/after telemetry.
 
 Priority fixes (highest impact):
+
 1. **Parallelize tool execution** — `asyncio.gather` in `tool_executor.py` (quick win, measurable latency drop)
 2. **Fix cache eviction** — add TTL or LRU cap to the response cache in `main.py`
 3. **Skip validation on failed summaries** — guard in `orchestrator.py`
@@ -57,6 +64,7 @@ Add before/after metric comparisons and trace screenshots to `DIAGNOSIS.md`.
 ---
 
 ## Step 5: Write Production Readiness Doc
+
 Add a `PRODUCTION.md` (or section in README) covering:
 
 - **SLIs/SLOs**: P99 latency < Xs, error rate < Y%, cache hit rate, token cost per task
@@ -66,6 +74,7 @@ Add a `PRODUCTION.md` (or section in README) covering:
 ---
 
 ## Step 6: Update README.md
+
 - How to run the instrumented system (`docker compose up`)
 - How to reproduce the load test
 - How to view traces (Jaeger UI), metrics (Prometheus/Grafana), logs

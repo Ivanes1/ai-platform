@@ -10,6 +10,7 @@ Coordinates the multi-step agent workflow:
 import logging
 import time
 import traceback
+from collections import deque
 
 from opentelemetry.trace import StatusCode
 
@@ -22,7 +23,7 @@ from src.telemetry import get_tracer, pipeline_stage_duration_seconds
 logger = logging.getLogger(__name__)
 
 # Execution audit trail for debugging and compliance review
-_execution_log: list[dict] = []
+_execution_log: deque[dict] = deque(maxlen=10_000)
 
 
 async def run_task(
