@@ -1,7 +1,6 @@
 """Central telemetry setup: OpenTelemetry tracing, Prometheus metrics, structured logging."""
 
 import logging
-import os
 
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
@@ -118,8 +117,9 @@ def setup_telemetry(app) -> None:
     """Wire up tracing, metrics, and logging. Call once at app startup."""
     global _tracer_provider
 
-    endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://jaeger:4317")
-    exporter = OTLPSpanExporter(endpoint=endpoint, insecure=True)
+    from src.config import OTEL_EXPORTER_OTLP_ENDPOINT
+
+    exporter = OTLPSpanExporter(endpoint=OTEL_EXPORTER_OTLP_ENDPOINT, insecure=True)
     _tracer_provider = TracerProvider()
     _tracer_provider.add_span_processor(BatchSpanProcessor(exporter))
     trace.set_tracer_provider(_tracer_provider)
