@@ -257,9 +257,9 @@ docker compose logs agent-service > evidence/after/agent-service.log
 
 ---
 
-## IMPROVEMENTS.md
+## DIAGNOSIS.md Updates
 
-After collecting after-evidence, create `IMPROVEMENTS.md` at the repo root as a standalone before/after showcase. It should cover each fix in its own section with: what the problem was, what changed in the code, and the specific numbers/screenshots that prove it worked. Do not add before/after comparison content to `DIAGNOSIS.md` — that file captures the diagnosis only; `IMPROVEMENTS.md` owns the results.
+After collecting after-evidence, add a `### Results` subsection to each issue in `DIAGNOSIS.md` with the actual before/after numbers and relevant screenshots. Add an overall `## Before/After Summary` table at the end of the file.
 
 ---
 
@@ -272,4 +272,4 @@ After collecting after-evidence, create `IMPROVEMENTS.md` at the repo root as a 
 - [ ] Pre-commit hook passes (ruff format + ruff check + pyright)
 - [ ] Load test runs to completion after fixes
 - [ ] `evidence/after/` directory contains all required screenshots and metric snapshots
-- [ ] `IMPROVEMENTS.md` exists at repo root with before/after comparison and screenshots for each fix
+- [ ] `DIAGNOSIS.md` has a `### Results` subsection for each fixed issue and a `## Before/After Summary` table at the end

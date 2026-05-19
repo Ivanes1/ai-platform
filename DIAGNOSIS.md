@@ -50,6 +50,16 @@ Since only one task per tenant can hold the lock at a time, and there are only 3
 
 Either remove the per-tenant lock entirely (if strict ordering isn't truly required), or invert the nesting so the semaphore is acquired first and the tenant lock only guards a narrow critical section. Alternatively, replace the lock with a per-tenant bounded queue that allows `N` concurrent executions per tenant rather than serializing completely.
 
+### Results
+
+`_tenant_locks` removed entirely. The semaphore now governs all concurrency directly.
+
+| Metric              | Before | After |
+| ------------------- | ------ | ----- |
+| `active_tasks` peak | 3      | 4–5   |
+
+![active tasks](improvement/prometheus-active-tasks.png)
+
 ---
 
 ## Issue 2: Timeout Wraps Queue Wait Time, Causing Tasks to Fail Without Executing
@@ -87,6 +97,24 @@ The 30-second timeout encompasses everything: waiting for the per-tenant lock, w
 ### Proposed Fix
 
 Separate the timeout into two parts: (1) a queue timeout that controls how long a task waits for its turn, and (2) an execution timeout that applies only to the pipeline run itself. Alternatively, start the `asyncio.wait_for` timer only after the lock and semaphore are acquired.
+
+### Results
+
+`asyncio.wait_for` now wraps only `run_task(...)`, inside the semaphore block. All 29 pre-fix failures had 0 tokens — they timed out before reaching the LLM. After the fix, failures dropped to zero.
+
+| Metric          | Before   | After   |
+| --------------- | -------- | ------- |
+| Failed requests | 29 / 250 | 0 / 250 |
+| Error rate      | 11.6%    | 0%      |
+| P50 latency     | 13.96s   | 8.88s   |
+| P95 latency     | 30.01s   | 16.64s  |
+| P99 latency     | 30.01s   | 22.27s  |
+
+P95 and P99 were pinned at exactly 30.01s — the timeout ceiling. After the fix, tail latency reflects real LLM retry backoff rather than queue starvation.
+
+![error rate](improvement/prometheus-error-rate.png)
+
+![latency percentiles](improvement/prometheus-task-latency-percentiles.png)
 
 ---
 
@@ -139,6 +167,21 @@ async def execute_tools(tools: list[tuple[str, dict]]) -> list[dict]:
 
 Expected improvement: tool stage drops from ~473ms to ~316ms (the slowest tool, search).
 
+### Results
+
+Sequential loop replaced with `asyncio.gather`. Duration drops from the sum of all tools to the slowest tool.
+
+| Metric                | Before | After    |
+| --------------------- | ------ | -------- |
+| Execute stage average | 473ms  | 293ms    |
+| Reduction             |        | **−38%** |
+
+The Jaeger trace below shows the three tool spans now overlapping instead of stacking end-to-end.
+
+![stage duration](improvement/prometheus-stage-duration.png)
+
+![jaeger parallel tools](improvement/jaeger-trace-tools.png)
+
 ---
 
 ## Issue 4: Failures Concentrated on Single Tenant (93% on tenant-gamma)
@@ -175,7 +218,11 @@ Tenant-gamma happened to receive more retries/slow responses early in the test, 
 
 ### Proposed Fix
 
-This resolves automatically when Issues 1 and 2 are fixed. Additionally, consider per-tenant fairness mechanisms: weighted queuing, per-tenant timeout budgets, or circuit breakers that shed load early rather than queuing tasks that are likely to timeout.
+This resolves automatically when Issues 1 and 2 are fixed.
+
+### Results
+
+Resolved by fixing Issues 1 and 2. tenant-gamma failures dropped from 27 to 0. Additionally, consider per-tenant fairness mechanisms: weighted queuing, per-tenant timeout budgets, or circuit breakers that shed load early rather than queuing tasks that are likely to timeout.
 
 ---
 
@@ -211,3 +258,26 @@ The `_execution_log` is the most concerning: each entry contains full prompt tex
 - Add LRU eviction or TTL to `_response_cache` (e.g., `cachetools.TTLCache`)
 - Add a retention window to `task_store` (e.g., keep only last N hours of tasks)
 - Either remove `_execution_log` or cap its size with a ring buffer / write to external storage
+
+### Results
+
+- `task_store` → `TTLCache(maxsize=10_000, ttl=7200)`
+- `_response_cache` → `TTLCache(maxsize=1_000, ttl=3_600)`
+- `_execution_log` → `deque(maxlen=10_000)`
+
+No load test metric directly measures this fix (it prevents an OOM condition rather than improving throughput). The service log shows no memory-related warnings during the after run.
+
+---
+
+## Before/After Summary
+
+250-request load test across three tenants, before and after all four fixes.
+
+| Metric                     | Before   | After   | Change    |
+| -------------------------- | -------- | ------- | --------- |
+| Failed requests            | 29 / 250 | 0 / 250 | **−100%** |
+| Error rate                 | 11.6%    | 0%      | **−100%** |
+| P50 latency                | 13.96s   | 8.88s   | **−36%**  |
+| P95 latency                | 30.01s   | 16.64s  | **−45%**  |
+| P99 latency                | 30.01s   | 22.27s  | **−26%**  |
+| Tool execution stage (avg) | 473ms    | 293ms   | **−38%**  |
