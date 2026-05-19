@@ -22,6 +22,7 @@ Execute a sustained load test against the instrumented service, capture comprehe
 ## 1. Review existing load test
 
 Read `tests/test_load.py` to understand:
+
 - Number of concurrent clients
 - Request pattern (tenants, priorities, task descriptions)
 - Duration
@@ -45,6 +46,7 @@ python -m tests.test_load
 ```
 
 Let the test run to completion. Monitor system behavior during the run:
+
 - Check Docker logs: `docker compose logs -f agent-service`
 - Watch metrics: http://localhost:8080/metrics (refresh periodically)
 - Observe active traces appearing in Jaeger
@@ -94,60 +96,76 @@ Open http://localhost:16686 and capture:
 Open http://localhost:9090 and run these queries, capturing results:
 
 1. **Request rate by status**
+
    ```promql
    sum by (status) (rate(task_requests_total[1m]))
    ```
+
    - Screenshot graph showing completed, failed, cached
    - File: `evidence/prometheus-request-rate-by-status.png`
 
 2. **Error rate**
+
    ```promql
    sum(rate(task_requests_total{status="failed"}[1m])) / sum(rate(task_requests_total[1m]))
    ```
+
    - Screenshot showing error rate percentage over time
    - File: `evidence/prometheus-error-rate.png`
 
 3. **Task latency distribution**
+
    ```promql
    histogram_quantile(0.50, sum(rate(task_duration_seconds_bucket[1m])) by (le))
    histogram_quantile(0.95, sum(rate(task_duration_seconds_bucket[1m])) by (le))
    histogram_quantile(0.99, sum(rate(task_duration_seconds_bucket[1m])) by (le))
    ```
+
    - Screenshot showing P50/P95/P99 lines
    - File: `evidence/prometheus-task-latency-percentiles.png`
 
 4. **Pipeline stage duration**
+
    ```promql
    histogram_quantile(0.95, sum(rate(pipeline_stage_duration_seconds_bucket[1m])) by (stage, le))
    ```
+
    - Screenshot showing P95 latency per stage (plan, execute, summarize, validate)
    - File: `evidence/prometheus-stage-duration.png`
 
 5. **Cache hit rate**
+
    ```promql
    sum(rate(cache_hits_total[1m])) / (sum(rate(task_requests_total[1m])) - sum(rate(task_requests_total{status="completed_cached"}[1m])))
    ```
+
    - Screenshot showing cache hit ratio over time
    - File: `evidence/prometheus-cache-hit-rate.png`
 
 6. **Active tasks gauge**
+
    ```promql
    active_tasks
    ```
+
    - Screenshot showing concurrent task count (should stay ≤5 due to semaphore)
    - File: `evidence/prometheus-active-tasks.png`
 
 7. **LLM retry rate**
+
    ```promql
    sum by (reason) (rate(llm_retries_total[1m]))
    ```
+
    - Screenshot showing retry rate by reason (server_error, rate_limited, timeout)
    - File: `evidence/prometheus-llm-retry-rate.png`
 
 8. **Token usage by tenant**
+
    ```promql
    sum by (tenant_id, token_type) (rate(token_usage_total[1m]))
    ```
+
    - Screenshot showing prompt/completion token consumption per tenant
    - File: `evidence/prometheus-token-usage.png`
 
@@ -155,6 +173,7 @@ Open http://localhost:9090 and run these queries, capturing results:
    ```promql
    histogram_quantile(0.95, sum(rate(rate_limiter_wait_seconds_bucket[1m])) by (le))
    ```
+
    - Screenshot showing P95 wait time before LLM calls
    - File: `evidence/prometheus-rate-limiter-wait.png`
 
@@ -181,11 +200,13 @@ docker compose logs agent-service > evidence/agent-service.log
 ```
 
 Extract key log patterns:
+
 - Count of cache hits: `grep "completed from cache" evidence/agent-service.log | wc -l`
 - Count of task failures: `grep "task failed" evidence/agent-service.log | wc -l`
 - Count of LLM retries: `grep "llm_retry" evidence/agent-service.log | wc -l`
 
 Create a summary file:
+
 ```bash
 cat > evidence/log-summary.txt <<EOF
 Cache hits: $(grep "completed from cache" evidence/agent-service.log | wc -l)
@@ -209,15 +230,18 @@ Create `evidence/test-config.md` with:
 **Concurrent clients**: N
 **Request pattern**: [describe tenant distribution, priority mix, task variety]
 **Platform**:
+
 - Docker Compose version: X.Y.Z
 - Python version: 3.12
 - Total containers: 5 (agent-service, mock-llm, jaeger, prometheus, grafana)
 
 **System resources** (from `docker stats` during test):
+
 - agent-service: X% CPU, Y MB RAM
 - mock-llm: X% CPU, Y MB RAM
 
 **Key findings** (high-level):
+
 - Total requests: N
 - Success rate: X%
 - P95 latency: Y seconds

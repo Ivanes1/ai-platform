@@ -122,9 +122,7 @@ def setup_telemetry(app) -> None:
     from src.config import OTEL_EXPORTER_OTLP_ENDPOINT
 
     # Set service name so Jaeger shows "agent-service" instead of "unknown_service"
-    resource = Resource(attributes={
-        service_attributes.SERVICE_NAME: "agent-service"
-    })
+    resource = Resource(attributes={service_attributes.SERVICE_NAME: "agent-service"})
 
     exporter = OTLPSpanExporter(endpoint=OTEL_EXPORTER_OTLP_ENDPOINT, insecure=True)
     _tracer_provider = TracerProvider(resource=resource)
