@@ -7,9 +7,10 @@ import logging
 import time
 import uuid
 import asyncio
+from cachetools import TTLCache
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, cast
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
 from src.models import Priority, TaskStatus, TaskResult
@@ -30,18 +31,18 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Agent Execution Service")
 
-# Task storage
-task_store: dict[str, TaskResult] = {}
+# Task storage — bounded TTL cache to prevent unbounded memory growth
+task_store: TTLCache[str, TaskResult] = cast(
+    TTLCache[str, TaskResult], TTLCache(maxsize=10_000, ttl=7200)
+)
 
 # Response cache for repeated queries — avoids redundant LLM calls
-_response_cache: dict[str, dict] = {}
+_response_cache: TTLCache[str, dict] = cast(
+    TTLCache[str, dict], TTLCache(maxsize=1000, ttl=3600)
+)
 
 # Limit concurrent task executions to protect downstream LLM service
 _task_semaphore = asyncio.Semaphore(MAX_CONCURRENT_TASKS)
-
-# Ensure tasks for the same tenant execute in submission order
-# to prevent race conditions on downstream tenant state
-_tenant_locks: dict[str, asyncio.Lock] = {}
 
 
 class CreateTaskBody(BaseModel):
@@ -123,38 +124,32 @@ async def create_task(body: CreateTaskBody):
             priority=body.priority,
         )
 
-        async def _guarded_execute():
-            lock = _tenant_locks.setdefault(body.tenant_id, asyncio.Lock())
-            async with lock:
-                async with _task_semaphore:
-                    active_tasks.inc()
-                    try:
-                        return await run_task(
-                            task_id=task_id,
-                            description=body.task_description,
-                            tenant_id=body.tenant_id,
-                            priority=body.priority,
-                        )
-                    finally:
-                        active_tasks.dec()
-
         t0 = time.monotonic()
-        try:
-            result = await asyncio.wait_for(
-                _guarded_execute(),
-                timeout=TASK_TIMEOUT_SECONDS,
-            )
-        except asyncio.TimeoutError:
-            result = TaskResult(
-                task_id=task_id,
-                status=TaskStatus.FAILED,
-                tenant_id=body.tenant_id,
-                priority=body.priority,
-                error="Task execution exceeded time limit",
-                token_usage={"prompt_tokens": 0, "completion_tokens": 0},
-                created_at=time.time(),
-                completed_at=time.time(),
-            )
+        async with _task_semaphore:
+            active_tasks.inc()
+            try:
+                result = await asyncio.wait_for(
+                    run_task(
+                        task_id=task_id,
+                        description=body.task_description,
+                        tenant_id=body.tenant_id,
+                        priority=body.priority,
+                    ),
+                    timeout=TASK_TIMEOUT_SECONDS,
+                )
+            except asyncio.TimeoutError:
+                result = TaskResult(
+                    task_id=task_id,
+                    status=TaskStatus.FAILED,
+                    tenant_id=body.tenant_id,
+                    priority=body.priority,
+                    error="Task execution exceeded time limit",
+                    token_usage={"prompt_tokens": 0, "completion_tokens": 0},
+                    created_at=time.time(),
+                    completed_at=time.time(),
+                )
+            finally:
+                active_tasks.dec()
 
         duration = time.monotonic() - t0
         task_store[task_id] = result

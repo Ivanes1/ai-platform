@@ -45,8 +45,6 @@ async def execute_tools(tools: list[tuple[str, dict]]) -> list[dict]:
     Returns:
         Ordered list of tool execution results.
     """
-    results = []
-    for tool_name, args in tools:
-        result = await execute_tool(tool_name, args)
-        results.append(result)
-    return results
+    return list(
+        await asyncio.gather(*(execute_tool(name, args) for name, args in tools))
+    )
