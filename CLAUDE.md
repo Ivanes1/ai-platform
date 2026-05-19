@@ -52,7 +52,27 @@ A single shared `httpx.AsyncClient` is reused across calls for connection poolin
 
 ### Configuration (`src/config.py`)
 
-All tunables live here. `LLM_SERVER_URL` is the only env-var override; everything else is hardcoded constants (timeout, concurrency cap, retry policy, rate limits, token costs).
+All tunables live here. `LLM_SERVER_URL` and `OTEL_EXPORTER_OTLP_ENDPOINT` are env-var overrides; everything else is hardcoded constants (timeout, concurrency cap, retry policy, rate limits, token costs).
+
+### Observability (`src/telemetry.py`)
+
+Central setup module called once at app startup via `setup_telemetry(app)` in `main.py`'s startup hook. Provides:
+
+- **Distributed tracing** — OpenTelemetry `TracerProvider` with OTLP gRPC exporter → Jaeger. Auto-instruments FastAPI and httpx. Each pipeline stage and LLM attempt produces a child span under `task.execute`.
+- **Prometheus metrics** — `GET /metrics` returns text in Prometheus format. Metrics: `task_requests_total`, `task_duration_seconds`, `pipeline_stage_duration_seconds`, `llm_call_duration_seconds`, `llm_calls_total`, `llm_retries_total`, `tool_execution_duration_seconds`, `cache_hits_total`, `active_tasks`, `token_usage_total`, `rate_limiter_wait_seconds`.
+- **Structured JSON logging** — every log line includes `trace_id` and `span_id` fields from the active span.
+
+### Infrastructure services (`docker-compose.yml`)
+
+In addition to `agent-service` and `mock-llm`, three observability services are included:
+
+| Service      | Image                           | Port(s)               |
+| ------------ | ------------------------------- | --------------------- |
+| `jaeger`     | `jaegertracing/all-in-one:1.57` | 4317 (OTLP), 16686 (UI) |
+| `prometheus` | `prom/prometheus:v2.51.0`       | 9090                  |
+| `grafana`    | `grafana/grafana:10.4.2`        | 3000                  |
+
+Scrape config is in `prometheus.yml`; Grafana datasource and dashboard are in `grafana/provisioning/`.
 
 ## Pre-commit checks
 

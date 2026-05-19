@@ -3,6 +3,9 @@
 import os
 
 LLM_SERVER_URL = os.getenv("LLM_SERVER_URL", "http://mock-llm:8081")
+OTEL_EXPORTER_OTLP_ENDPOINT = os.getenv(
+    "OTEL_EXPORTER_OTLP_ENDPOINT", "http://jaeger:4317"
+)
 TASK_TIMEOUT_SECONDS = 30
 MAX_CONCURRENT_TASKS = 5
 
