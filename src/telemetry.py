@@ -6,8 +6,10 @@ from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
+from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.semconv.attributes import service_attributes
 from prometheus_client import Counter, Gauge, Histogram
 from pythonjsonlogger import jsonlogger
 
@@ -119,8 +121,13 @@ def setup_telemetry(app) -> None:
 
     from src.config import OTEL_EXPORTER_OTLP_ENDPOINT
 
+    # Set service name so Jaeger shows "agent-service" instead of "unknown_service"
+    resource = Resource(attributes={
+        service_attributes.SERVICE_NAME: "agent-service"
+    })
+
     exporter = OTLPSpanExporter(endpoint=OTEL_EXPORTER_OTLP_ENDPOINT, insecure=True)
-    _tracer_provider = TracerProvider()
+    _tracer_provider = TracerProvider(resource=resource)
     _tracer_provider.add_span_processor(BatchSpanProcessor(exporter))
     trace.set_tracer_provider(_tracer_provider)
 
