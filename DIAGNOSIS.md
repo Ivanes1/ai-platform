@@ -58,7 +58,7 @@ Either remove the per-tenant lock entirely (if strict ordering isn't truly requi
 | ------------------- | ------ | ----- |
 | `active_tasks` peak | 3      | 4–5   |
 
-![active tasks](improvement/prometheus-active-tasks.png)
+![active tasks](improvements/prometheus-active-tasks.png)
 
 ---
 
@@ -112,9 +112,9 @@ Separate the timeout into two parts: (1) a queue timeout that controls how long 
 
 P95 and P99 were pinned at exactly 30.01s — the timeout ceiling. After the fix, tail latency reflects real LLM retry backoff rather than queue starvation.
 
-![error rate](improvement/prometheus-error-rate.png)
+![error rate](improvements/prometheus-error-rate.png)
 
-![latency percentiles](improvement/prometheus-task-latency-percentiles.png)
+![latency percentiles](improvements/prometheus-task-latency-percentiles.png)
 
 ---
 
@@ -129,11 +129,11 @@ The three tools (search, database_lookup, calculator) always execute sequentiall
 - `evidence/jaeger-trace-tools.png` — tool spans are stacked sequentially: `tool.search` (375ms starting at 352ms), then `tool.database_lookup` (83ms starting at 728ms), then `tool.calculator` (32ms starting at 812ms). Total `task.tools` span: 493ms
 - `evidence/jaeger-trace-success.png` — same sequential pattern visible in the overall trace timeline
 - `evidence/metrics-snapshot.txt`:
-  - `tool_execution_duration_seconds_sum{tool_name="search"}` = 62.7s (198 executions, avg 316ms)
+  - `tool_execution_duration_seconds_sum{tool_name="search"}` = 62.7s (201 executions, avg 312ms)
   - `tool_execution_duration_seconds_sum{tool_name="database_lookup"}` = 25.3s (avg 127ms)
   - `tool_execution_duration_seconds_sum{tool_name="calculator"}` = 6.3s (avg 31ms)
   - `pipeline_stage_duration_seconds_sum{stage="execute"}` = 93.6s (avg 473ms per task)
-  - Sum of tool averages: 316 + 127 + 31 = 474ms ≈ stage average, confirming sequential execution
+  - Sum of tool averages: 312 + 128 + 32 = 472ms ≈ stage average, confirming sequential execution
 
 ### Root Cause
 
@@ -152,9 +152,9 @@ Each tool is `await`ed sequentially. Since the tools are independent (search, da
 
 ### Impact
 
-- **Performance:** Adds ~157ms (474ms - 316ms) of unnecessary latency per task. Across 198 non-cached executions, that's ~31s of aggregate wasted time
+- **Performance:** Adds ~161ms (473ms - 312ms) of unnecessary latency per task. Across 198 non-cached executions, that's ~32s of aggregate wasted time
 - **Severity: Medium**
-- The wasted time per-task is modest (157ms) compared to LLM call durations (500ms-1s each), but it compounds under the per-tenant serialization from Issue 1
+- The wasted time per-task is modest (161ms) compared to LLM call durations (500ms-1s each), but it compounds under the per-tenant serialization from Issue 1
 
 ### Proposed Fix
 
@@ -165,7 +165,7 @@ async def execute_tools(tools: list[tuple[str, dict]]) -> list[dict]:
     return await asyncio.gather(*(execute_tool(name, args) for name, args in tools))
 ```
 
-Expected improvement: tool stage drops from ~473ms to ~316ms (the slowest tool, search).
+Expected improvement: tool stage drops from ~473ms to ~312ms (the slowest tool, search).
 
 ### Results
 
@@ -178,9 +178,9 @@ Sequential loop replaced with `asyncio.gather`. Duration drops from the sum of a
 
 The Jaeger trace below shows the three tool spans now overlapping instead of stacking end-to-end.
 
-![stage duration](improvement/prometheus-stage-duration.png)
+![stage duration](improvements/prometheus-stage-duration.png)
 
-![jaeger parallel tools](improvement/jaeger-trace-tools.png)
+![jaeger parallel tools](improvements/jaeger-trace-tools.png)
 
 ---
 

@@ -43,8 +43,8 @@ All targets are justified against the after-fix load-test numbers (250 requests,
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Metric** | `cache_hits_total`                                                                                                                                                                                                                                                                                             |
 | **PromQL** | `rate(cache_hits_total[5m]) / rate(task_requests_total[5m])`                                                                                                                                                                                                                                                   |
-| **SLO**    | ≥ 15% over any 1-hour window (informational; no SLO breach action)                                                                                                                                                                                                                                             |
-| **Why**    | The load test (3 tenants, 5 unique tasks each) produced a ~20.8% hit rate (52/250 requests served from cache). A sustained drop below 15% signals that the cache key space has grown unexpectedly (e.g., task descriptions are being generated dynamically and never repeating), which warrants investigation. |
+| **SLO**    | ≥ 10% over any 1-hour window (informational; no SLO breach action)                                                                                                                                                                                                                                             |
+| **Why**    | The load test (3 tenants, 10 task templates, 30% duplicate rate) produced a ~15% hit rate (37/250 requests served from cache in the after run). A sustained drop below 10% signals that the cache key space has grown unexpectedly (e.g., task descriptions are being generated dynamically and never repeating), which warrants investigation. |
 
 ### SLI 5 — Semaphore Utilisation
 
@@ -170,7 +170,7 @@ groups:
 
 **Problem:** Each replica maintains its own cache. With N replicas, the effective cache hit rate degrades from the single-process rate to approximately `1/N` of it — every replica must warm up independently, multiplying LLM calls and costs.
 
-**Fix:** Move the cache to the same Redis instance as the task store, using a key of `cache:{sha256(tenant_id + description)}`. The TTL is already present in the current design, so the migration is straightforward. Add a cache-miss counter per-replica to monitor warm-up behaviour after deployments.
+**Fix:** Move the cache to the same Redis instance as the task store, using a key of `cache:{tenant_id}:{task_description}`. The TTL is already present in the current design, so the migration is straightforward. Add a cache-miss counter per-replica to monitor warm-up behaviour after deployments.
 
 ---
 
@@ -186,11 +186,11 @@ groups:
 
 ### 4.4 Health Probes
 
-**Current state:** No `/health` or `/ready` endpoint. Kubernetes has no way to distinguish a live process from one that is stuck.
+**Current state:** A basic `GET /health` endpoint exists (returns `{"status": "ok"}`), but there is no readiness probe. Kubernetes cannot distinguish a live-but-overloaded process from one that is ready to accept traffic.
 
-**Fix:** Add two endpoints:
+**Fix:** Add a readiness endpoint:
 
-- `GET /health` (liveness): returns `200 OK` if the process is running. A 5xx here causes Kubernetes to restart the pod. Implementation: a simple `{"status": "ok"}` response — never perform external checks in liveness probes (it causes restart cascades if the LLM is down).
+- `GET /health` (liveness): already implemented — returns `200 OK` if the process is running. A 5xx here causes Kubernetes to restart the pod. Never perform external checks in liveness probes (it causes restart cascades if the LLM is down).
 - `GET /ready` (readiness): returns `200 OK` only when the service is ready to accept traffic — i.e., after `setup_telemetry()` has completed and the OTLP exporter has connected. Returns `503` during startup or when `active_tasks == MAX_CONCURRENT_TASKS` (optional load-shedding). A non-200 readiness response removes the pod from the load balancer without restarting it.
 
 ```yaml
@@ -217,7 +217,7 @@ readinessProbe:
 
 **Current state:** `LLM_SERVER_URL` and `OTEL_EXPORTER_OTLP_ENDPOINT` are passed as plain environment variables. Any API keys or database credentials added later would follow the same pattern, making them visible in pod specs, CI logs, and `kubectl describe pod`.
 
-**Fix:** Store secrets in GCP Secret Manager. Mount them into the container using the [Secret Manager CSI driver](https://cloud.google.com/secret-manager/docs/using-secret-manager-with-container-registry) or Workload Identity. Reference them in the pod spec as a volume or environment variable sourced from the mounted secret file — not hardcoded in the `Deployment` manifest. Rotate secrets without redeploying by bumping the secret version and triggering a rolling restart.
+**Fix:** Store secrets in GCP Secret Manager. Mount them into the container using the [Secret Manager CSI driver](https://docs.cloud.google.com/secret-manager/docs/secret-manager-managed-csi-component) or Workload Identity. Reference them in the pod spec as a volume or environment variable sourced from the mounted secret file — not hardcoded in the `Deployment` manifest. Rotate secrets without redeploying by bumping the secret version and triggering a rolling restart.
 
 ---
 
@@ -225,7 +225,7 @@ readinessProbe:
 
 **Current state:** A single container. `MAX_CONCURRENT_TASKS = 5` is a per-process semaphore.
 
-**Problem:** Scaling to N replicas multiplies total concurrency to `N × 5`, but the per-process semaphore means each replica still caps at 5 in-flight tasks. The global rate limit also multiplies (see §4.3). Additionally, each replica has its own `_tenant_locks` — inter-replica fairness is not enforced.
+**Problem:** Scaling to N replicas multiplies total concurrency to `N × 5`, but the per-process semaphore means each replica still caps at 5 in-flight tasks. The global rate limit also multiplies (see §4.3). There is no inter-replica fairness mechanism — each replica makes independent scheduling decisions with no awareness of other replicas' workloads.
 
 **Fix:**
 
@@ -330,7 +330,7 @@ The following issues were identified during diagnosis (see `DIAGNOSIS.md`) but n
 
 ### Cache Key Excludes Priority
 
-**Issue:** The response cache key is `sha256(tenant_id + task_description)`. Priority is not part of the key, so a `low`-priority cached result can be returned for an `urgent` request with the same description.
+**Issue:** The response cache key is `f"{tenant_id}:{task_description}"`. Priority is not part of the key, so a `low`-priority cached result can be returned for an `urgent` request with the same description.
 
 **Impact:** If the pipeline applies different behaviour based on priority (or if tenants expect priority to affect the response), stale cross-priority cache hits silently return wrong results. Even without behavioural differences today, this is a latent correctness bug: adding priority-aware logic later will require a cache invalidation strategy.
 
