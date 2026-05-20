@@ -217,28 +217,28 @@ The observability stack directly enabled discovery of all five issues documented
 
 ### Tools used
 
-**Claude Code (claude-sonnet-4-6)** was used as the primary engineering assistant throughout all four tasks. It was invoked via the Claude Code CLI (`claude`) within the dev container.
+**Claude Code** was used as the primary engineering assistant throughout all tasks. Opus 4.6 was used for thinking/planning and Sonnet for execution.
 
-### How the work was orchestrated
+### Setup
 
-The work was broken into five discrete steps (instrumentation, load testing, diagnosis, fixes, production readiness doc, README) tracked as a plan in `.claude/plans/`. For each step, I provided Claude Code with the specific files to read, described the goal, and reviewed the output before accepting it.
+- Created a detailed `CLAUDE.md` with project architecture, commands, and design constraints
+- Created a code writing skill for coding style consistency
+- Created a general plan with a brief description of every step
 
-**Instrumentation (Task 1):** Claude Code wrote `src/telemetry.py`, updated `docker-compose.yml`, added Prometheus and Grafana provisioning files, and instrumented `main.py`, `orchestrator.py`, `llm_client.py`, and `tool_executor.py`. I reviewed each file for metric label consistency (ensuring `tenant_id` and `priority` were present on every metric that would need slicing) and corrected the histogram bucket boundaries for the `rate_limiter_wait_seconds` metric, which had been given task-latency-scale buckets instead of millisecond-scale buckets.
+### Workflow per step
 
-**Diagnosis (Task 2–3):** Claude Code analyzed the load test output and Prometheus metric snapshots, identified the five issues, and drafted `DIAGNOSIS.md` with evidence citations. I cross-checked every metric value against the raw `evidence/metrics-snapshot.txt` and the Jaeger screenshots to confirm the numbers were internally consistent. One error was caught: the initial draft reported `active_tasks` peaked at 2, but the Prometheus screenshot clearly showed 3 — Claude Code had mis-read the scale; the text was corrected before submission.
+Each step followed this process:
 
-**Fixes (Task 3):** Claude Code implemented the four fixes (remove tenant lock, move timeout inside semaphore, parallelize tool execution, add TTLCache bounds). I reviewed each diff for correctness and ran the pre-commit hook (`uv run ruff format`, `uv run ruff check`, `uv run pyright`) before accepting. The `asyncio.gather` fix required a minor type annotation adjustment that pyright flagged.
+1. **Plan** — create a plan for the step, refine it, and save it to the `.claude/plans/` directory
+2. **Implement** — execute the plan using Claude Code
+3. **Manual verification** — verify everything was done correctly and make manual changes as needed
+4. **AI verification** — in a separate session, ask Claude to verify that everything was done correctly and nothing was missed
+5. **Next step** — proceed to the next step
 
-**Production readiness (Task 4):** Claude Code drafted `PRODUCTION.md` including PromQL alert expressions, Kubernetes YAML snippets, and the Redis migration design. I reviewed the HPA custom metric name to confirm it matched the actual Prometheus metric name exposed by the service, and adjusted the memory limit recommendation to align with the observed RSS during load testing (~87 MB) rather than a round-number guess.
+### Pro tips
 
-### What worked well
-
-- Delegating boilerplate instrumentation code (metric declarations, span creation, JSON formatter) to Claude Code substantially reduced the time spent on mechanical work
-- Having Claude Code read multiple source files in parallel and summarize the architecture before instrumentation meant the spans and labels were coherent across modules from the start
-- Using Claude Code to draft the `DIAGNOSIS.md` structure with evidence citations, then manually verifying each claim against the actual telemetry, was an effective division of labor: Claude handled synthesis, I handled verification
-
-### What didn't work / was corrected
-
-- **Metric mis-read:** As noted above, the initial `active_tasks` peak value was wrong; human review of the screenshots caught it
-- **Bucket scale error:** The `rate_limiter_wait_seconds` histogram used task-latency-scale buckets (seconds) when the actual values are sub-millisecond; caught during metric review and corrected before the load test ran
-- **Over-broad token bucket recommendation:** The first draft of `PRODUCTION.md` recommended a per-tenant rate limit of `global_limit / num_active_tenants`, which would dynamically change as tenants join and leave (a race condition). I redirected Claude Code to recommend a static per-tenant hard cap instead, with a note that the global limit enforces the ceiling
+- Use Opus (4.6 is better than 4.7 imo) for thinking and Sonnet for execution
+- Ask Claude to point you in the right direction when viewing logs, traces, and metrics
+- Save logs in raw format (JSON) for Claude to easily check
+- Ask Claude to start with something verbose and detailed, then reduce it as needed
+- Start a new session or compact the current one to avoid context rot/overflow/quota limits
